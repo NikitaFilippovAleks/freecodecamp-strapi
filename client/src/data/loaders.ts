@@ -1,5 +1,6 @@
 import { fetchAPI } from "@/utils/fetch-api";
 import { getStrapiURL } from "@/utils/get-strapi-url";
+import { draftMode } from "next/headers";
 import qs from 'qs';
 
 const BASE_URL = getStrapiURL();
@@ -91,9 +92,17 @@ const pageBySlugQuery = (slug: string) => qs.stringify(
 );
 
 export async function getPageBySlug(slug: string) {
+  const draftModeInstance = await draftMode();
+  const isDraftMode = draftModeInstance.isEnabled;
+
+  console.log('______isDraftMode_______', isDraftMode);
+  
   const path = "/api/pages";
   const url = new URL(path, BASE_URL);
   url.search = pageBySlugQuery(slug);
+  if (isDraftMode) {
+    url.searchParams.set('status', 'draft');
+  }
   return await fetchAPI(url.href, { method: "GET" });
 }
 
