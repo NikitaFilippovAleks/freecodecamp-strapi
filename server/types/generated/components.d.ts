@@ -31,6 +31,19 @@ export interface BlocksInfoBlock extends Struct.ComponentSchema {
   };
 }
 
+export interface BlocksSubscribe extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_subscribes';
+  info: {
+    displayName: 'Subscribe';
+  };
+  attributes: {
+    buttonText: Schema.Attribute.String;
+    content: Schema.Attribute.Text;
+    headline: Schema.Attribute.String;
+    placeholder: Schema.Attribute.String;
+  };
+}
+
 export interface ElementsLink extends Struct.ComponentSchema {
   collectionName: 'components_elements_links';
   info: {
@@ -71,6 +84,7 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'blocks.hero-section': BlocksHeroSection;
       'blocks.info-block': BlocksInfoBlock;
+      'blocks.subscribe': BlocksSubscribe;
       'elements.link': ElementsLink;
       'elements.logo': ElementsLogo;
       'layout.header': LayoutHeader;

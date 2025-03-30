@@ -81,6 +81,9 @@ const pageBySlugQuery = (slug: string) => qs.stringify(
               cta: true,
             },
           },
+          "blocks.subscribe": {
+            populate: true,
+          },
         },
       },
     },
@@ -92,4 +95,29 @@ export async function getPageBySlug(slug: string) {
   const url = new URL(path, BASE_URL);
   url.search = pageBySlugQuery(slug);
   return await fetchAPI(url.href, { method: "GET" });
+}
+
+const globalSettingQuery = qs.stringify({
+  populate: {
+    header: {
+      populate: {
+        logo: {
+          populate: {
+            image: {
+              fields: ["url", "alternativeText"],
+            },
+          },
+        },
+        navigation: true,
+        cta: true,
+      },
+    },
+  },
+});
+
+export async function getGlobalSettings() {
+  const path = "/api/global";
+  const url = new URL(path, BASE_URL);
+  url.search = globalSettingQuery;
+  return fetchAPI(url.href, { method: "GET" });
 }
